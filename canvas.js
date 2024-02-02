@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {terrain, generateTerrain} from "./components/terrain.js";
 
 window.addEventListener("load", () => {
@@ -6,6 +7,10 @@ window.addEventListener("load", () => {
   const ctx = canvas.getContext("2d");
   let deltaTime = 1;
   let prevTimestamp = 0;
+
+	ctx.strokeStyle="white";
+	ctx.lineWidth = 5;
+	ctx.strokeRect(10,10,100,100);
 
   console.log(canvas);
   canvas.addEventListener("resize", () => {
@@ -25,4 +30,3 @@ window.addEventListener("load", () => {
     }, 100);
   }
   animate(0);
-});
