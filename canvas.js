@@ -11,13 +11,10 @@ window.addEventListener("load", () => {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   let dragonVelocity = 0;
-  window.addEventListener("keydown", (e) => {if (e.key == "w") {
-  	dragonVelocity = 10;
-  }});
-    window.addEventListener("keyup", (e) => {if (e.key == "w") {
-  	dragonVelocity = -10;
-  }});
-
+  let dragonVelocityX = 0;
+  let isDragonDive = false;
+  let isDragonDash = false;
+  
   ctx.canvas.width = window.innerWidth;
   ctx.canvas.height = window.innerHeight;
   let deltaTime = 1;
@@ -41,19 +38,49 @@ function dragon(){
 
   generateTerrain(ctx.canvas.width / ctx.canvas.height);
   initEnemies(ctx, ctx.canvas.width / ctx.canvas.height);
+
+  window.addEventListener("keydown", (e) => {
+  if (e.key == "w" && !isDragonDive) {
+  dragonVelocity = 13;
+  isDragonDive=true;
+  }});
+  
+  window.addEventListener("keydown", (e) => {
+  if (e.key == "d") {
+  dragonVelocityX = 10;
+  isDragonDash=true;
+  }});
   
   function animate(timestamp){
   
     let terrainposY = terrainPointsY[4];
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     dragon();
-   	dragonY+=dragonVelocity;		//here
+   	dragonY+=dragonVelocity;
+   	dragonX+=dragonVelocityX;
+
+   	
 	if(dragonY<0){
 		dragonY = 0;
 	}
-	if(dragonY>terrainposY){
-		dragonY = 0;
+	if(dragonY>(1-terrainposY)*canvas.height-95){
+		dragonVelocity = -10;
 	}
+	if(dragonX<0){
+		dragonX = 0;
+	}
+	if(dragonX>canvas.width/6){
+		dragonVelocityX = -20;
+	}
+	
+	
+  	if(dragonY==0){
+  	  isDragonDive=false;
+  	}
+  	if(dragonX==0){
+  	  isDragonDash=false;
+  	}
+  	
     deltaTime = timestamp - prevTimestamp;
     prevTimestamp = performance.now();
     terrain(ctx, deltaTime, speed);
