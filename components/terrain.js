@@ -27,6 +27,9 @@ export const generateTerrain = (aspectRatio) => {
   }
 };
 
+export const terrainY = () => {
+	return terrainPointsY[4];
+}
 
 export const terrain = (ctx, timedelta, speed) => {
   let aspectRatio = ctx.canvas.width / ctx.canvas.height;
