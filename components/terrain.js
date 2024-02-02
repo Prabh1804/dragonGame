@@ -38,7 +38,7 @@ export const terrain = (ctx, timedelta, speed) => {
   }
   ctx.moveTo(ctx.canvas.width, ctx.canvas.height);
   ctx.closePath();
-  ctx.strokeStyle = "rgb(0, 0, 0)";
+  ctx.strokeStyle = "rgb(255, 255, 255)";
   ctx.stroke();
   terrainPosX += timedelta * speed;
   console.log(terrainPointsY);
