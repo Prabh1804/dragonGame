@@ -2,8 +2,7 @@
 import {terrain, generateTerrain, terrainPointsY} from "./components/terrain.js";
 import {initEnemies, tickEnemies} from "./components/enemies.js";
 
-
-const speed = 0.001
+const speed = 0.0005;
 window.addEventListener("load", () => {
 
   let loading = document.querySelector(".loading");
