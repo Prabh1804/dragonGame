@@ -1,16 +1,18 @@
-const terrainPointsY = [];
 const detail = 100;
+const terrainPointsY = Array(detail);
 
 const sineWaves = [];
-for (let i = 0; i < 10; i++) {
-  sineWaves.push({phase: Math.random() * Math.PI, amplitude: (Math.random() + 1) * 0.5})
+for (let i = 0; i < 50; i++) {
+  sineWaves.push({phase: Math.random() * 10 , amplitude: (Math.random() * 1.5 ) })
 }
 
 const getY = (x) => {
   let y = 0;
   for (const wave of sineWaves) {
-    y += Math.sin(wave.phase * x) * wave.amplitude; 
+    const phase = (wave.phase * Math.sin(x/12)) % Math.PI ;
+    y += (Math.sin(phase) + 1) * wave.amplitude; 
   }
+  y /= sineWaves.length * 2;
   return y;
 }
 
@@ -18,35 +20,46 @@ let terrainPosX = 0 ;
 
 // Aspect ratio is Width / Height
 export const generateTerrain = (aspectRatio) => {
-  console.log("GeneratedTerrain");
   for (let i = 0; i < detail; i++) {
-    const x = i / detail + terrainPosX;
+    const x = ((i / detail + terrainPosX)) * aspectRatio;
     const y = getY(x);
-    terrainPointsY.push(y);
+    terrainPointsY[i] = y;
   }
 };
 
 
 export const terrain = (ctx, timedelta, speed) => {
-  ctx.beginPath()
-  ctx.moveTo(0, ctx.canvas.height);
-  for (let i = 0; i < terrainPointsY.length; i++) {
-    const x = i / terrainPointsY.length - terrainPosX; 
-    let y = terrainPosY[i];
-    ctx.lineTo(x * ctx.canvas.height, y * ctx.canvas.height);
-    ctx.moveTo(x * ctx.canvas.height, y * ctx.canvas.height);
+  let aspectRatio = ctx.canvas.width / ctx.canvas.height;
+  if (isNaN(aspectRatio)) {
+    aspectRatio = 1;
   }
-  ctx.moveTo(ctx.canvas.width, ctx.canvas.height);
-  ctx.closePath();
-  ctx.strokeStyle = "rgb(255, 255, 255)";
-  ctx.stroke();
-  terrainPosX += timedelta * speed;
-  console.log(terrainPointsY);
+  let firstX, lastX;
+  let terrainPath = new Path2D();
+  terrainPath.moveTo(0, ctx.canvas.height);
+  terrainPath.lineTo(0, (1 - terrainPointsY[0]) * ctx.canvas.height);
   for (let i = 0; i < terrainPointsY.length; i++) {
-    if (terrainPointsY[i] - terrainPosX < 0) {
-      terrainPoints.pop();
-      terrainPoints.push(getY(i / terrainPointsY.length - terrainPosX));
-      break;
+    const x = ((i+1) / terrainPointsY.length) * aspectRatio; 
+    let y = 1 - terrainPointsY[i];
+    if (i == 0) {
+      firstX = x;
     }
+    if (i == terrainPointsY.length - 1) {
+      lastX = x;
+    } 
+    terrainPath.lineTo(x * ctx.canvas.height, y * ctx.canvas.height);
   }
+  terrainPath.lineTo(ctx.canvas.width, (1-terrainPointsY[terrainPointsY.length - 1])*ctx.canvas.height);
+  terrainPath.lineTo(ctx.canvas.width, ctx.canvas.height);
+  terrainPath.moveTo(ctx.canvas.width, ctx.canvas.height);
+  terrainPath.lineTo(0, ctx.canvas.height);
+  terrainPath.closePath();
+  ctx.strokeStyle = "rgb(255, 255, 255)";
+  ctx.lineWidth = 10;
+  ctx.fill(terrainPath);
+  ctx.stroke(terrainPath);
+  ctx.fillStyle = "green";
+  // terrainPosX += timedelta * speed;
+  terrainPosX += timedelta;
+  terrainPointsY.shift();
+  terrainPointsY.push(getY((1 + terrainPosX) * aspectRatio));
 }

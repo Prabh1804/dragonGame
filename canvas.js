@@ -11,22 +11,25 @@ window.addEventListener("load", () => {
 	ctx.lineWidth = 5;
 	ctx.strokeRect(10,10,100,100);
 
-  console.log(canvas);
-  canvas.addEventListener("resize", () => {
-    ctx.width = canvas.width;
-    ctx.height = canvas.height;
-    console.log("Hellox");
-    generateTerrain(ctx.width / ctx.height);
-  });
+  const canvasResizeObserver = new ResizeObserver((entries) => {
+    for (const entry of entries) {
 
+      ctx.canvas.width  = window.innerWidth;
+      ctx.canvas.height = window.innerHeight;
+      ctx.clearRect(0, 0, ctx.width, ctx.height);
+    }
+  });
+  canvasResizeObserver.observe(canvas);
+
+  generateTerrain(ctx.canvas.width / ctx.canvas.height);
   function animate(timestamp){
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     deltaTime = timestamp - prevTimestamp;
     prevTimestamp = performance.now();
-    console.log(deltaTime);
-    terrain(ctx, deltaTime, 0.001);
+    terrain(ctx, deltaTime / 1000, 0.001);
     setTimeout(() => {
       requestAnimationFrame(animate);
-    }, 100);
+    }, 1/60);
   }
   animate(0);
 });
