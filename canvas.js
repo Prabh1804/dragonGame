@@ -2,8 +2,13 @@ import {terrain, generateTerrain} from "./components/terrain.js";
 
 window.addEventListener("load", () => {
 
+  let loading = document.querySelector(".loading");
+  loading.style.display="none";
+  
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
+  ctx.canvas.width = window.innerWidth;
+  ctx.canvas.height = window.innerHeight;
   let deltaTime = 1;
   let prevTimestamp = 0;
 
