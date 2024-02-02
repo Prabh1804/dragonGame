@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {terrain, generateTerrain} from "./components/terrain.js";
 
 window.addEventListener("load", () => {
@@ -30,3 +29,4 @@ window.addEventListener("load", () => {
     }, 100);
   }
   animate(0);
+});
