@@ -1,5 +1,5 @@
 const detail = 100;
-const terrainPointsY = Array(detail);
+export const terrainPointsY = Array(detail);
 
 const sineWaves = [];
 for (let i = 0; i < 50; i++) {
@@ -58,11 +58,10 @@ export const terrain = (ctx, timedelta, speed) => {
   terrainPath.closePath();
   ctx.strokeStyle = "rgb(255, 255, 255)";
   ctx.lineWidth = 1;
-  ctx.fill(terrainPath);
   ctx.stroke(terrainPath);
+  terrainPosX += timedelta * speed;
   ctx.fillStyle = "black";
-  // terrainPosX += timedelta * speed;
-  terrainPosX += timedelta;
+  ctx.fill(terrainPath);
   terrainPointsY.shift();
   terrainPointsY.push(getY((1 + terrainPosX) * aspectRatio));
 }

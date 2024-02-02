@@ -1,11 +1,13 @@
-import {terrain, generateTerrain, terrainY as getterrainY} from "./components/terrain.js";
 
+import {terrain, generateTerrain, terrainPointsY} from "./components/terrain.js";
+import {initEnemies, tickEnemies} from "./components/enemies.js";
+
+
+const speed = 0.001
 window.addEventListener("load", () => {
 
   let loading = document.querySelector(".loading");
   loading.style.display="none";
-
-//  let terrainY = terrainY();
   
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
@@ -29,28 +31,34 @@ function dragon(){
 	ctx.strokeRect(dragonX,dragonY,100,100);
 }
 
-function handleWindowResize() {
-    ctx.canvas.width = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  }
-  window.addEventListener("resize", handleWindowResize);
+  const canvasResizeObserver = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      ctx.canvas.width  = window.innerWidth;
+      ctx.canvas.height = window.innerHeight;
+      ctx.clearRect(0, 0, ctx.width, ctx.height);
+    }
+  });
+  canvasResizeObserver.observe(canvas);
 
   generateTerrain(ctx.canvas.width / ctx.canvas.height);
+  initEnemies(ctx, ctx.canvas.width / ctx.canvas.height);
   
   function animate(timestamp){
+  
+    let terrainposY = terrainPointsY[4];
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     dragon();
    	dragonY+=dragonVelocity;		//here
 	if(dragonY<0){
 		dragonY = 0;
 	}
-//	if(dragonY>terrainY){
-//		dragonY = 0;
-//	}
+	if(dragonY>terrainposY){
+		dragonY = 0;
+	}
     deltaTime = timestamp - prevTimestamp;
     prevTimestamp = performance.now();
-    terrain(ctx, deltaTime / 1000, 0.001);
+    terrain(ctx, deltaTime, speed);
+    tickEnemies(ctx, deltaTime, speed);
     setTimeout(() => {
       requestAnimationFrame(animate);
     }, 1/60);
