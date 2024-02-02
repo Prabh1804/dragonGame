@@ -6,10 +6,12 @@ let deltaTime = 1;
 let prevTimestamp = 0;
 
 const step = (timestamp) => {
-  deltaTime = prevTimestamp - timestamp;
+  deltaTime = timestamp - prevTimestamp;
   prevTimestamp = timestamp;
-  // terrain(ctx, deltaTime);
-  setTimeout(() => {canvas.requestAnimationFrame(step)}, 100);
-};
-
-canvas.requestAnimationFrame(step);
+  requestAnimationFrame(step);
+}
+ function animate(){
+	prevTimestamp = performance.now();
+	requestAnimationFrame(step);
+ }
+animate();
