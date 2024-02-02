@@ -54,12 +54,11 @@ export const terrain = (ctx, timedelta, speed) => {
   terrainPath.lineTo(0, ctx.canvas.height);
   terrainPath.closePath();
   ctx.strokeStyle = "rgb(255, 255, 255)";
-  ctx.lineWidth = 10;
-  ctx.fill(terrainPath);
+  ctx.lineWidth = 1;
   ctx.stroke(terrainPath);
-  ctx.fillStyle = "green";
   terrainPosX += timedelta * speed;
-  // terrainPosX += timedelta ;
+  ctx.fillStyle = "black";
+  ctx.fill(terrainPath);
   terrainPointsY.shift();
   terrainPointsY.push(getY((1 + terrainPosX) * aspectRatio));
 }
