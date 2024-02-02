@@ -1,17 +1,28 @@
-import "./components/terrain.js";
+import {terrain, generateTerrain} from "./components/terrain.js";
 
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-let deltaTime = 1;
-let prevTimestamp = 0;
+window.addEventListener("load", () => {
 
-const step = (timestamp) => {
-  deltaTime = timestamp - prevTimestamp;
-  prevTimestamp = timestamp;
-  requestAnimationFrame(step);
-}
- function animate(){
-	prevTimestamp = performance.now();
-	requestAnimationFrame(step);
- }
-animate();
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  let deltaTime = 1;
+  let prevTimestamp = 0;
+
+  console.log(canvas);
+  canvas.addEventListener("resize", () => {
+    ctx.width = canvas.width;
+    ctx.height = canvas.height;
+    console.log("Hellox");
+    generateTerrain(ctx.width / ctx.height);
+  });
+
+  function animate(timestamp){
+    deltaTime = timestamp - prevTimestamp;
+    prevTimestamp = performance.now();
+    console.log(deltaTime);
+    terrain(ctx, deltaTime, 0.001);
+    setTimeout(() => {
+      requestAnimationFrame(animate);
+    }, 100);
+  }
+  animate(0);
+});
