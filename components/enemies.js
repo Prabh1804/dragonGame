@@ -22,7 +22,10 @@ export const tickBullets = (ctx, deltaTime) => {
     const prevStrokeStyle = ctx.strokeStyle;
     ctx.fillStyle = "#ffffff";
     ctx.strokeStyle = "#ffffff";
-    ctx.strokeRect(bullet.x * ctx.canvas.height, bullet.y * ctx.canvas.height, 10, 10);
+//     ctx.strokeRect(bullet.x * ctx.canvas.height, bullet.y * ctx.canvas.height, 10, 10); // here
+    let bulletImg = new Image();
+    bulletImg.src = "/components/bullet123.png"
+    ctx.drawImage(bulletImg,  bullet.x * ctx.canvas.height, bullet.y * ctx.canvas.height, 15, 15 );
     ctx.fill();
     ctx.stroke();
     ctx.fillStyle = prevStyle;
@@ -49,8 +52,11 @@ export const tickEnemies = (ctx, deltaTime, speed) => {
     const prevStrokeStyle = ctx.strokeStyle;
     ctx.fillStyle = "#ffffff";
     ctx.strokeStyle = "#ffffff";
-    ctx.strokeRect(x * ctx.canvas.height, (1-y) * ctx.canvas.height, -20, -20);
-    ctx.fill();
+//     ctx.strokeRect(x * ctx.canvas.height, (1-y) * ctx.canvas.height, -20, -20);
+    let enemyimg = new Image();
+    enemyimg.src = "/components/enemy123.png";
+    ctx.drawImage(enemyimg, x * ctx.canvas.height, (1-y) * ctx.canvas.height, -30, -30);
+//     ctx.fill();
     ctx.stroke();
     ctx.fillStyle = prevStyle;
     ctx.strokeStyle = prevStrokeStyle;
