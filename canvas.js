@@ -1,6 +1,6 @@
 
 import {terrain, generateTerrain} from "./components/terrain.js";
-import {initEnemies, tickEnemies} from "./components/enemies.js";
+import {initEnemies, tickEnemies, tickBullets} from "./components/enemies.js";
 import {initDragon, tickDragon} from "./components/dragon.js"
 
 const speed = 0.0005;
@@ -41,6 +41,7 @@ window.addEventListener("load", () => {
     prevTimestamp = performance.now();
     terrain(ctx, deltaTime, speed);
     tickEnemies(ctx, deltaTime, speed);
+    tickBullets(ctx, deltaTime);
     setTimeout(() => {
       requestAnimationFrame(animate);
     }, 1/60);
