@@ -24,7 +24,7 @@ export const initDragon = () => {
   }});
   
   window.addEventListener("keydown", (e) => {
-  if (e.key == "d") {
+  if (e.key == "d" && !isDragonDash) {
   dragonVelocityX = 10;
   isDragonDash=true;
   }});
@@ -38,8 +38,14 @@ export const drawDragon = () => {
 
     const ctx = canvas.getContext("2d");
 	let dragonIndex = spriteIndex % 4;
-	ctx.drawImage(dragonIdleSprite[dragonIndex],dragonX,dragonY,100,100);
-
+	ctx.drawImage(dragonIdleSprite[dragonIndex],dragonX,dragonY,
+	dragonIdleSprite[1].width/2,dragonIdleSprite[1].height/2);
+	ctx.strokeStyle="white";
+	ctx.beginPath();
+	ctx.linwWidth=1;
+	ctx.strokeRect(dragonX,dragonY,dragonIdleSprite[1].width/2,dragonIdleSprite[1].height/2);
+	ctx.stroke();
+	
 }
 
 export const tickDragon = () => {
@@ -51,8 +57,8 @@ export const tickDragon = () => {
 	if(dragonY<20){
 		dragonY = 20;
 	}
-	if(dragonY>(1-terrainposY)*canvas.height-95){
-		dragonVelocity = -10;
+	if(dragonY>(1-terrainposY)*canvas.height-60){
+		dragonVelocity = -6;
 	}
 	if(dragonX<25){
 		dragonX = 25;
