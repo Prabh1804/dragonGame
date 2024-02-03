@@ -1,6 +1,8 @@
 
 import {terrain, generateTerrain, terrainPointsY} from "./components/terrain.js";
 import {initEnemies, tickEnemies} from "./components/enemies.js";
+export let dragonX = 25;
+export let dragonY = 20;
 
 const speed = 0.0005;
 window.addEventListener("load", () => {
@@ -14,27 +16,33 @@ window.addEventListener("load", () => {
   let dragonVelocityX = 0;
   let isDragonDive = false;
   let isDragonDash = false;
+  let dragonIdleSprite = [];
+  
+  for (let i = 0; i < 4; i++){
+  	let sprite = new Image;
+  	sprite.src=`frame${i+1}.png`;
+  	dragonIdleSprite.push(sprite);	
+  }
+  console.log(dragonIdleSprite);
+
   
   ctx.canvas.width = window.innerWidth;
   ctx.canvas.height = window.innerHeight;
   let deltaTime = 1;
   let prevTimestamp = 0;
-  let dragonX = 0;
-  let dragonY = 0;
+  
 function dragon(){	
 	ctx.strokeStyle="white";
 	ctx.lineWidth = 5;
 	ctx.strokeRect(dragonX,dragonY,100,100);
 }
 
-  const canvasResizeObserver = new ResizeObserver((entries) => {
-    for (const entry of entries) {
-      ctx.canvas.width  = window.innerWidth;
-      ctx.canvas.height = window.innerHeight;
-      ctx.clearRect(0, 0, ctx.width, ctx.height);
-    }
-  });
-  canvasResizeObserver.observe(canvas);
+function handleWindowResize() {
+    ctx.canvas.width = window.innerWidth;
+    ctx.canvas.height = window.innerHeight;
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  }
+  window.addEventListener("resize", handleWindowResize);
 
   generateTerrain(ctx.canvas.width / ctx.canvas.height);
   initEnemies(ctx, ctx.canvas.width / ctx.canvas.height);
@@ -59,25 +67,24 @@ function dragon(){
    	dragonY+=dragonVelocity;
    	dragonX+=dragonVelocityX;
 
-   	
-	if(dragonY<0){
-		dragonY = 0;
+	if(dragonY<20){
+		dragonY = 20;
 	}
 	if(dragonY>(1-terrainposY)*canvas.height-95){
 		dragonVelocity = -10;
 	}
-	if(dragonX<0){
-		dragonX = 0;
+	if(dragonX<25){
+		dragonX = 25;
 	}
-	if(dragonX>canvas.width/6){
+	if(dragonX>canvas.width/5.5){
 		dragonVelocityX = -20;
 	}
 	
 	
-  	if(dragonY==0){
+  	if(dragonY==20){
   	  isDragonDive=false;
   	}
-  	if(dragonX==0){
+  	if(dragonX==25){
   	  isDragonDash=false;
   	}
   	
