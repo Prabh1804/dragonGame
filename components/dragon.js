@@ -1,19 +1,21 @@
 export let dragonX = 25;
 export let dragonY = 20;
+import {terrainPointsY} from "./terrain.js"
 
-export const initDragon = () => {
   let dragonVelocity = 0;
   let dragonVelocityX = 0;
   let isDragonDive = false;
   let isDragonDash = false;
   let dragonIdleSprite = [];
+  let spriteIndex = 1;
+
+export const initDragon = () => {
   
   for (let i = 0; i < 4; i++){
   	let sprite = new Image;
-  	sprite.src=`frame${i+1}.png`;
+  	sprite.src=`frame${i}.png`;
   	dragonIdleSprite.push(sprite);	
   }
-  console.log(dragonIdleSprite);
   
   window.addEventListener("keydown", (e) => {
   if (e.key == "w" && !isDragonDive) {
@@ -26,19 +28,25 @@ export const initDragon = () => {
   dragonVelocityX = 10;
   isDragonDash=true;
   }});
-  
 
+	setInterval(()=>{
+		spriteIndex++;
+	},100);
 }
 
 export const drawDragon = () => {	
-	ctx.strokeStyle="white";
-	ctx.lineWidth = 5;
-	ctx.strokeRect(dragonX,dragonY,100,100);
+
+    const ctx = canvas.getContext("2d");
+	let dragonIndex = spriteIndex % 4;
+	ctx.drawImage(dragonIdleSprite[dragonIndex],dragonX,dragonY,100,100);
+
 }
 
 export const tickDragon = () => {
 	dragonY+=dragonVelocity;
    	dragonX+=dragonVelocityX;
+    let terrainposY = terrainPointsY[4];
+
 
 	if(dragonY<20){
 		dragonY = 20;
