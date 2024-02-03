@@ -10,8 +10,7 @@ let aspectRatio = 1;
 
 const fireDelay = 1000;
 const summonBullet = (enemy, scale) => {
-  bulletsList.push({angle: Math.atan2(dragonY - enemy.y * scale / aspectRatio, dragonX - enemy.x * scale), speed: 0.001, x: enemy.x, y: 1-enemy.y});
-  console.log(bulletsList);
+  bulletsList.push({angle: Math.atan2(dragonY - (1-enemy.y) * scale , dragonX - enemy.x * scale), speed: 0.001, x: enemy.x, y: 1-enemy.y});
 };
 
 export const tickBullets = (ctx, deltaTime) => {
@@ -19,14 +18,15 @@ export const tickBullets = (ctx, deltaTime) => {
     let bullet = bulletsList[i];
     bullet.x += bullet.speed * deltaTime * Math.cos(bullet.angle);
     bullet.y += bullet.speed * deltaTime * Math.sin(bullet.angle);
-    const bulletShape = new Path2D();
-    bulletShape.ellipse( bullet.x * ctx.canvas.height, bullet.y * ctx.canvas.height, 10, 10, 0, Math.PI * 2, false);
-    console.log(bullet.x , bullet.y );
-    bulletShape.closePath();
     const prevStyle = ctx.fillStyle;
+    const prevStrokeStyle = ctx.strokeStyle;
     ctx.fillStyle = "#ffffff";
-    ctx.fill(bulletShape);
+    ctx.strokeStyle = "#ffffff";
+    ctx.strokeRect(bullet.x * ctx.canvas.height, bullet.y * ctx.canvas.height, 10, 10);
+    ctx.fill();
+    ctx.stroke();
     ctx.fillStyle = prevStyle;
+    ctx.strokeStyle = prevStrokeStyle;
   }
   for (let i = 0; i < bulletsList.length; i++) {
     if (bulletsList[i].x < 0 || bulletsList[i].y < 0) {
@@ -41,17 +41,19 @@ export const tickEnemies = (ctx, deltaTime, speed) => {
     const aspectRatio = ctx.canvas.width / ctx.canvas.height;
     enemiesList[i].x -= speed * deltaTime;
     const x = enemiesList[i].x;
-    const j = Math.min(Math.floor(x * terrainPointsY.length / 2), terrainPointsY.length - 1);
+    const j = Math.min(Math.round(x * terrainPointsY.length / 2), terrainPointsY.length - 1);
     const delta = terrainPointsY[j] - enemiesList[i].y;
     enemiesList[i].y += delta;
     const y = enemiesList[i].y;    
-    const path = new Path2D();
-    path.rect(x * ctx.canvas.height, (1-y) * ctx.canvas.height, 20, -20);
     const prevStyle = ctx.fillStyle;
-    ctx.fillStyle = "red";
-    path.closePath();
-    ctx.fill(path);
+    const prevStrokeStyle = ctx.strokeStyle;
+    ctx.fillStyle = "#ffffff";
+    ctx.strokeStyle = "#ffffff";
+    ctx.strokeRect(x * ctx.canvas.height, (1-y) * ctx.canvas.height, -20, -20);
+    ctx.fill();
+    ctx.stroke();
     ctx.fillStyle = prevStyle;
+    ctx.strokeStyle = prevStrokeStyle;
     if (x < 0) {
       const enemy = enemiesList.shift();
       clearInterval(enemy.gun);
