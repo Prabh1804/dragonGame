@@ -1,10 +1,11 @@
-body{
-	margin:0;
+body {
+	margin: 0;
 	padding: 0;
 	background: white;
 	box-sizing: border-box;
 }
-#canvas{
+
+#canvas {
 	position: absolute;
 	height: 100vh;
 	width: 100vw;

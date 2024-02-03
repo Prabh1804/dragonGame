@@ -1,13 +1,20 @@
-const enemiesList = [];
+export const enemiesList = [];
+export const bulletsList = [];
 
 import {terrainPointsY} from "./terrain.js";
 
 const maxCountdown = 1500;
 
+let target = {x: 0, y: 0};
+
+const maybeSummonBullet = (enemy) => {
+  
+};
+
 export const tickEnemies = (ctx, deltaTime, speed) => {
   for (let i = 0; i < enemiesList.length; i++) {
     const aspectRatio = ctx.canvas.width / ctx.canvas.height;
-    enemiesList[i].x -= speed * deltaTime * aspectRatio;
+    enemiesList[i].x -= speed * deltaTime;
     const x = enemiesList[i].x;
     const j = Math.floor(x * terrainPointsY.length / 2);
     const delta = terrainPointsY[j] - enemiesList[i].y;
@@ -25,6 +32,8 @@ export const tickEnemies = (ctx, deltaTime, speed) => {
     }
   }
 };
+
+
 
 let prevSummonTime = 0;
 
