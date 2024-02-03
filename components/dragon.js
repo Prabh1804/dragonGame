@@ -4,8 +4,9 @@ import {terrainPointsY} from "./terrain.js"
 
   let dragonVelocity = 0;
   let dragonVelocityX = 0;
-  let isDragonDive = false;
+  let isDragonGnd = false;
   let isDragonDash = false;
+  let isDragonDive = false;
   let dragonIdleSprite = [];
   let spriteIndex = 1;
 
@@ -16,19 +17,30 @@ export const initDragon = () => {
   	sprite.src=`frame${i}.png`;
   	dragonIdleSprite.push(sprite);	
   }
-  
+ 
   window.addEventListener("keydown", (e) => {
-  if (e.key == "w" && !isDragonDive) {
-  dragonVelocity = 13;
+  if (e.key == "w" && !isDragonGnd) {
+  dragonVelocity = 8;
+  }});
+
+  window.addEventListener("keyup", (e) => {
+  if (e.key == "w") {
+  dragonVelocity = -8;
   isDragonDive=true;
   }});
   
   window.addEventListener("keydown", (e) => {
-  if (e.key == "d" && !isDragonDash) {
+  if (e.key == "d") {
   dragonVelocityX = 10;
   isDragonDash=true;
   }});
 
+  window.addEventListener("keyup", (e) => {
+  if (e.key == "d") {
+  dragonVelocityX = -10;
+  isDragonDash=true;
+  }});
+  
 	setInterval(()=>{
 		spriteIndex++;
 	},100);
@@ -43,7 +55,7 @@ export const drawDragon = () => {
 	ctx.strokeStyle="white";
 	ctx.beginPath();
 	ctx.linwWidth=1;
-	ctx.strokeRect(dragonX,dragonY,dragonIdleSprite[1].width/2,dragonIdleSprite[1].height/2);
+	// ctx.strokeRect(dragonX,dragonY,dragonIdleSprite[1].width/2,dragonIdleSprite[1].height/2);
 	ctx.stroke();
 	
 }
@@ -57,13 +69,17 @@ export const tickDragon = () => {
 	if(dragonY<20){
 		dragonY = 20;
 	}
-	if(dragonY>(1-terrainposY)*canvas.height-60){
-		dragonVelocity = -6;
+	if(dragonY>(1-terrainposY)*canvas.height-70){
+		dragonVelocity = -0.5;
+		isDragonGnd = true;
+	}
+	else{
+		isDragonGnd = false;
 	}
 	if(dragonX<25){
 		dragonX = 25;
 	}
-	if(dragonX>canvas.width/5.5){
+	if(dragonX>canvas.width){
 		dragonVelocityX = -20;
 	}
 	
