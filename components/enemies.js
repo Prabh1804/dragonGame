@@ -82,6 +82,15 @@ const enemies = (aspect_ratio, ctx) => {
       }
 };
 
+let enemiesIntervalId;
 export const initEnemies = (ctx, aspect_ratio) => {
-  window.setInterval(() => {enemies(aspect_ratio, ctx)}, maxCountdown);
+  enemiesIntervalId = window.setInterval(() => {enemies(aspect_ratio, ctx)}, maxCountdown);
 };
+
+export const destroyEnemies = () => {
+  window.clearInterval(enemiesIntervalId);
+  while (enemiesList.length != 0) {
+    clearInterval(enemiesList.pop().gun);
+  }
+  bulletsList.length = 0;  
+}

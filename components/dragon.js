@@ -4,6 +4,7 @@ export let dragonWidth;
 export let dragonHeight;
 import {terrainPointsY} from "./terrain.js"
 import{bulletsList} from "./enemies.js"
+import{isGameRunning, showEndScreen} from "../canvas.js";
 
   const ctx = canvas.getContext("2d");
   let dragonVelocity = 0;
@@ -17,7 +18,7 @@ import{bulletsList} from "./enemies.js"
   hitImg.src = "/components/hitdragon.png";
   let hitDisplayTime = 0;
   let score = 0;
-  let heart = 50;
+export let heart = 5;
   let invincible = false;
 
 export const initDragon = () => {
@@ -74,7 +75,9 @@ export const drawDragon = () => {
 }
 
 export const drawScore = () => {
-	score++;
+	if (isGameRunning) {
+		score++;
+	}
 	ctx.fillStyle = "white"
 	ctx.font = "25px Arial"
 	ctx.fillText("score: " + score , canvas.width - canvas.width/7.5, 20);
@@ -98,6 +101,9 @@ export const collisionDragon = () => {
 			hitDisplayTime = 100;
 			if (!invincible){
 				heart -= 1;
+				if (heart < 1) {
+					showEndScreen();
+				}
 				invincible = true;
 				setTimeout(()=>{
 					invincible=false;

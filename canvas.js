@@ -1,7 +1,17 @@
 
 import {terrain, generateTerrain} from "./components/terrain.js";
-import {initEnemies, tickEnemies, tickBullets} from "./components/enemies.js";
-import {initDragon, tickDragon} from "./components/dragon.js"
+import {initEnemies, tickEnemies, tickBullets, destroyEnemies} from "./components/enemies.js";
+import {initDragon, tickDragon, heart} from "./components/dragon.js"
+import {Screen} from "./components/startScreen.js";
+
+export let shouldShowStartScreen = true;
+export let shouldShowEndScreen = false;
+export let isGameRunning = false;
+export const showEndScreen = () => {
+  shouldShowEndScreen = true;
+  destroyEnemies();
+  isGameRunning = false;
+}
 
 const speed = 0.0005;
 
@@ -28,20 +38,34 @@ window.addEventListener("load", () => {
   
 
   generateTerrain(ctx.canvas.width / ctx.canvas.height);
-  initEnemies(ctx, ctx.canvas.width / ctx.canvas.height);
+// (headingFont, buttonFont, text, buttonText, onClick)  
+  const startScreen = new Screen("72px 'Pixelify Sans'", "50px 'Pixelify Sans'", 9, "dragonGame", "Play!", (button) => {
+    button.destroy();
+    shouldShowStartScreen = false;
+    isGameRunning = true;
+    initEnemies(ctx, ctx.canvas.width / ctx.canvas.height);
+  })
 
-  
+  const endScreen = new Screen("72px 'Pixelify Sans'", "100px 'Pixelify Sans'", 30, "", "↺", (button) => {
+    button.destroy();
+    shouldShowEndScreen = false;
+    isGameRunning = true;
+    initEnemies(ctx, ctx.canvas.width / ctx.canvas.height);
+  })
   function animate(timestamp){
-  
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     tickDragon();
-
-    
     deltaTime = timestamp - prevTimestamp;
     prevTimestamp = performance.now();
     terrain(ctx, deltaTime, speed);
     tickEnemies(ctx, deltaTime, speed);
     tickBullets(ctx, deltaTime);
+    if (shouldShowStartScreen) {
+      startScreen.drawScreen(ctx);
+    }
+    if (shouldShowEndScreen) {
+      endScreen.drawScreen(ctx);
+    }
     setTimeout(() => {
       requestAnimationFrame(animate);
     }, 1/60);
