@@ -1,4 +1,4 @@
-const detail = 100;
+const detail = 300;
 export const terrainPointsY = Array(detail);
 
 const sineWaves = [];
