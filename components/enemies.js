@@ -2,7 +2,7 @@ export const enemiesList = [];
 export const bulletsList = [];
 
 import {terrainPointsY} from "./terrain.js";
-import {dragonX, dragonY} from "./dragon.js";
+import {dragonX, dragonY, dragonWidth, dragonHeight} from "./dragon.js";
 
 const maxCountdown = 1500;
 
@@ -10,7 +10,7 @@ let aspectRatio = 1;
 
 const fireDelay = 1000;
 const summonBullet = (enemy, scale) => {
-  bulletsList.push({angle: Math.atan2(dragonY - (1-enemy.y) * scale , dragonX - enemy.x * scale), speed: 0.001, x: enemy.x, y: 1-enemy.y});
+  bulletsList.push({angle: Math.atan2(dragonY + dragonHeight / 2 - (1-enemy.y) * scale , dragonX + dragonWidth / 2 - enemy.x * scale), speed: 0.001, x: enemy.x, y: 1-enemy.y});
 };
 
 export const tickBullets = (ctx, deltaTime) => {

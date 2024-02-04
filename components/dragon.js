@@ -1,5 +1,7 @@
 export let dragonX = 25;
 export let dragonY = 20;
+export let dragonWidth;
+export let dragonHeight;
 import {terrainPointsY} from "./terrain.js"
 
   let dragonVelocity = 0;
@@ -17,6 +19,8 @@ export const initDragon = () => {
   	sprite.src=`frame${i}.png`;
   	dragonIdleSprite.push(sprite);	
   }
+dragonWidth = dragonIdleSprite[1].width/2;
+dragonHeight = dragonIdleSprite[1].height/2
  
   window.addEventListener("keydown", (e) => {
   if (e.key == "w" && !isDragonGnd) {
@@ -48,24 +52,23 @@ export const initDragon = () => {
 
 export const drawDragon = () => {	
 
-    const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d");
 	let dragonIndex = spriteIndex % 4;
 	ctx.drawImage(dragonIdleSprite[dragonIndex],dragonX,dragonY,
 	dragonIdleSprite[1].width/2,dragonIdleSprite[1].height/2);
 	ctx.strokeStyle="white";
 	ctx.beginPath();
-	ctx.linwWidth=1;
+	ctx.lineWidth=1;
 	// ctx.strokeRect(dragonX,dragonY,dragonIdleSprite[1].width/2,dragonIdleSprite[1].height/2);
 	ctx.stroke();
 	
 }
 
 export const tickDragon = () => {
-	dragonY+=dragonVelocity;
+    const ctx = canvas.getContext("2d");
+		dragonY+=dragonVelocity;
    	dragonX+=dragonVelocityX;
-    let terrainposY = terrainPointsY[4];
-
-
+    let terrainposY = terrainPointsY[Math.round(dragonX * terrainPointsY.length / ctx.canvas.width )];
 	if(dragonY<20){
 		dragonY = 20;
 	}
