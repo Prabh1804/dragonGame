@@ -15,7 +15,7 @@ import{isGameRunning, showEndScreen} from "../canvas.js";
   let dragonIdleSprite = [];
   let spriteIndex = 1;
   let hitImg = new Image();
-  hitImg.src = "/components/hitdragon.png";
+  hitImg.src = "/hitdragon.png";
   let hitDisplayTime = 0;
   let score = 0;
 export let heart = 5;

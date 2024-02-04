@@ -24,7 +24,7 @@ export const tickBullets = (ctx, deltaTime) => {
     ctx.strokeStyle = "#ffffff";
 //     ctx.strokeRect(bullet.x * ctx.canvas.height, bullet.y * ctx.canvas.height, 10, 10); // here
     let bulletImg = new Image();
-    bulletImg.src = "/components/bullet123.png"
+    bulletImg.src = "/bullet123.png"
     ctx.drawImage(bulletImg,  bullet.x * ctx.canvas.height, bullet.y * ctx.canvas.height, 15, 15 );
     ctx.fill();
     ctx.stroke();
@@ -54,7 +54,7 @@ export const tickEnemies = (ctx, deltaTime, speed) => {
     ctx.strokeStyle = "#ffffff";
 //     ctx.strokeRect(x * ctx.canvas.height, (1-y) * ctx.canvas.height, -20, -20);
     let enemyimg = new Image();
-    enemyimg.src = "/components/enemy123.png";
+    enemyimg.src = "/enemy123.png";
     ctx.drawImage(enemyimg, x * ctx.canvas.height, (1-y) * ctx.canvas.height, -30, -30);
 //     ctx.fill();
     ctx.stroke();
