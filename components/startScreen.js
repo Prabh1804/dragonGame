@@ -51,6 +51,11 @@ class Button {
     ctx.fillText(this.text, this.x, this.y + this.btnTextOff);
     ctx.font = prevFont;
   }
+
+  revive() {
+    canvas.addEventListener("click", this.#clickListener);
+    canvas.addEventListener("mousemove", this.#intersectingListener);
+  }
   destroy() {
     canvas.removeEventListener("mousemove",this.#intersectingListener);
     canvas.removeEventListener("click",this.#clickListener);

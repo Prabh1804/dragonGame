@@ -7,12 +7,22 @@ import {Screen} from "./components/startScreen.js";
 export let shouldShowStartScreen = true;
 export let shouldShowEndScreen = false;
 export let isGameRunning = false;
+let ctx;
+  const endScreen = new Screen("72px 'Pixelify Sans'", "100px 'Pixelify Sans'", 30, "", "↺", (button) => {
+    button.destroy();
+    shouldShowEndScreen = false;
+    isGameRunning = true;
+    setScore(0);
+    setHealth(5);
+    initEnemies(ctx, ctx.canvas.width / ctx.canvas.height);
+  })
+
 export const showEndScreen = () => {
   shouldShowEndScreen = true;
   destroyEnemies();
   isGameRunning = false;
+  endScreen.button.revive();
 }
-
 const speed = 0.0005;
 
 function getLines(ctx, text, maxWidth) {
@@ -41,7 +51,8 @@ window.addEventListener("load", () => {
   loading.style.display="none";
   
   const canvas = document.getElementById("canvas");
-  const ctx = canvas.getContext("2d");
+  ctx = canvas.getContext("2d");
+
  
   ctx.canvas.width = window.innerWidth;
   ctx.canvas.height = window.innerHeight;
@@ -72,14 +83,6 @@ window.addEventListener("load", () => {
     initEnemies(ctx, ctx.canvas.width / ctx.canvas.height);
   })
 
-  const endScreen = new Screen("72px 'Pixelify Sans'", "100px 'Pixelify Sans'", 30, "", "↺", (button) => {
-    button.destroy();
-    shouldShowEndScreen = false;
-    isGameRunning = true;
-    setScore(0);
-    setHealth(5);
-    initEnemies(ctx, ctx.canvas.width / ctx.canvas.height);
-  })
   function animate(timestamp){
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.font = "30px 'Pixelify Sans'";    
