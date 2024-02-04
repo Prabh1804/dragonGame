@@ -15,6 +15,27 @@ export const showEndScreen = () => {
 
 const speed = 0.0005;
 
+function getLines(ctx, text, maxWidth) {
+    var words = text.split(" ");
+    var lines = [];
+    var currentLine = words[0];
+
+    for (var i = 1; i < words.length; i++) {
+        var word = words[i];
+        var width = ctx.measureText(currentLine + " " + word).width;
+        if (width < maxWidth) {
+            currentLine += " " + word;
+        } else {
+            lines.push(currentLine);
+            currentLine = word;
+        }
+    }
+    lines.push(currentLine);
+    return lines;
+}
+
+let story = "By nature, a Dovah wants to destroy other dovah's eggs and human want to protect them. Can the dovah fulfill its infinite greed?";
+
 window.addEventListener("load", () => {
   let loading = document.querySelector(".loading");
   loading.style.display="none";
@@ -43,6 +64,11 @@ window.addEventListener("load", () => {
     button.destroy();
     shouldShowStartScreen = false;
     isGameRunning = true;
+    for (let i = 0; i < story.length; i++) {
+      setTimeout(() => {
+        story = story.slice(0, -1);
+      }, i * 20);
+    }
     initEnemies(ctx, ctx.canvas.width / ctx.canvas.height);
   })
 
@@ -56,6 +82,14 @@ window.addEventListener("load", () => {
   })
   function animate(timestamp){
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.font = "30px 'Pixelify Sans'";    
+    if (story.length > 0) {
+      let i = 0;
+      for (const line of getLines(ctx, story, 800)) {
+        ctx.fillText(line, ctx.canvas.width / 2, 100 + i * 50);
+        i++;
+      }
+    }
     tickDragon();
     deltaTime = timestamp - prevTimestamp;
     prevTimestamp = performance.now();

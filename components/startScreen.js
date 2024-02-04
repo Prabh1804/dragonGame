@@ -1,3 +1,4 @@
+
 class Button {
   #intersectingListener;
   #clickListener;
