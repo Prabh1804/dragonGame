@@ -20,6 +20,8 @@ import{isGameRunning, showEndScreen} from "../canvas.js";
   let score = 0;
 export let heart = 5;
   let invincible = false;
+export const setHealth = x => heart = x;
+export const setScore = x => score = x;
 
 export const initDragon = () => {
   

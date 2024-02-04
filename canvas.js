@@ -1,7 +1,7 @@
 
 import {terrain, generateTerrain} from "./components/terrain.js";
 import {initEnemies, tickEnemies, tickBullets, destroyEnemies} from "./components/enemies.js";
-import {initDragon, tickDragon, heart} from "./components/dragon.js"
+import {initDragon, tickDragon, heart, setScore, setHealth} from "./components/dragon.js"
 import {Screen} from "./components/startScreen.js";
 
 export let shouldShowStartScreen = true;
@@ -50,6 +50,8 @@ window.addEventListener("load", () => {
     button.destroy();
     shouldShowEndScreen = false;
     isGameRunning = true;
+    setScore(0);
+    setHealth(5);
     initEnemies(ctx, ctx.canvas.width / ctx.canvas.height);
   })
   function animate(timestamp){
